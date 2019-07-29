@@ -1,14 +1,18 @@
-use ggez::event::{self, EventHandler, KeyCode, KeyMods};
-use ggez::{graphics, nalgebra as na, timer};
+use ggez::event::{self, KeyCode};
+use ggez::graphics;
 use ggez::input::keyboard;
 
+use crate::player::Player;
+use crate::player_renderer;
+
 pub struct MainState {
-    pos_x: f32,
+    player: Player,
 }
 
 impl MainState {
     pub fn new() -> ggez::GameResult<MainState> {
-        let s = MainState { pos_x: 0.0 };
+        let player = Player::new();
+        let s = MainState { player };
         Ok(s)
     }
 }
@@ -16,25 +20,28 @@ impl MainState {
 impl event::EventHandler for MainState {
     fn update(&mut self, ctx: &mut ggez::Context) -> ggez::GameResult {
         if keyboard::is_key_pressed(ctx, KeyCode::Right) {
-            self.pos_x += 0.5;
-        } else if keyboard::is_key_pressed(ctx, KeyCode::Left) {
-            self.pos_x -= 0.5;
+            self.player.move_right();
         }
+
+        if keyboard::is_key_pressed(ctx, KeyCode::Left) {
+            self.player.move_left();
+        }
+
+        if keyboard::is_key_pressed(ctx, KeyCode::Up) {
+            self.player.move_forward();
+        }
+
+        if keyboard::is_key_pressed(ctx, KeyCode::Down) {
+            self.player.move_backward();
+        }
+
         Ok(())
     }
 
     fn draw(&mut self, ctx: &mut ggez::Context) -> ggez::GameResult {
         graphics::clear(ctx, [0.1, 0.2, 0.3, 1.0].into());
 
-        let circle = graphics::Mesh::new_circle(
-            ctx,
-            graphics::DrawMode::fill(),
-            na::Point2::new(self.pos_x, 380.0),
-            100.0,
-            2.0,
-            graphics::WHITE,
-        )?;
-        graphics::draw(ctx, &circle, (na::Point2::new(0.0, 0.0),))?;
+        let _ = player_renderer::draw(ctx, &self.player);
 
         graphics::present(ctx)?;
         Ok(())
