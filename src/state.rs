@@ -41,6 +41,7 @@ impl event::EventHandler for MainState {
             KeyCode::Down => self.player.begin_move_down(),
             KeyCode::Left => self.player.begin_move_left(),
             KeyCode::Right => self.player.begin_move_right(),
+            KeyCode::Space => self.player.set_new_message(),
             // Quit if Shift+Ctrl+Q is pressed.
             KeyCode::Q => {
                 if mods.contains(KeyMods::SHIFT) && mods.contains(KeyMods::CTRL) {
@@ -62,6 +63,7 @@ impl event::EventHandler for MainState {
             KeyCode::Down => self.player.end_move_down(),
             KeyCode::Left => self.player.end_move_left(),
             KeyCode::Right => self.player.end_move_right(),
+            KeyCode::Space => self.player.cancel_message(),
             _ => ()
         }
     }

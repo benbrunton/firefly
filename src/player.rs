@@ -1,16 +1,18 @@
 use std::f32;
+use rand::thread_rng;
+use rand::seq::SliceRandom;
 
 // frame on which animation occurs
 const FRAME_CYCLE: i32 = 10;
 const WALKING_VELOCITY: f32 = 0.5;
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 pub enum HorizontalDirection {
     Left,
     Right
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 pub enum VerticalDirection {
     Up,
     Down
@@ -28,6 +30,7 @@ pub struct Player {
     cycle: f32,
     lifecycle: i32,
     diagonal_velocity: f32,
+    message: Option<String>
 }
 
 impl Player {
@@ -45,7 +48,8 @@ impl Player {
             vertical_direction: VerticalDirection::Down,
             cycle: 0.0,
             lifecycle: 0,
-            diagonal_velocity
+            diagonal_velocity,
+            message: None,
         }
     }
 
@@ -132,6 +136,41 @@ impl Player {
 
     pub fn get_cycle(&self) -> f32 {
         self.cycle
+    }
+
+    pub fn set_new_message(&mut self) {
+        if self.message.is_some() {
+            return;
+        }
+
+        let choices = [
+            "Oh bloody hell!",
+            "Fuck this shit!",
+            "...piss in a bucket!",
+            "Just fucking perfect",
+            "Right... yeah... brilliant.",
+            "Bollocks!",
+            "Fucking, fucking, fucking, FUCK!",
+            "Shitting balls!",
+            "FML",
+            "What's the fucking point?",
+            "Why me?",
+            "Oh for fuck's sake!",
+            "FFS!",
+            "I can't even."
+        ];
+        let mut rng = thread_rng();
+        let phrase = choices.choose(&mut rng)
+            .unwrap_or(&"Bollocks!").to_string();
+        self.message = Some(phrase);
+    }
+
+    pub fn cancel_message(&mut self) {
+        self.message = None;
+    }
+
+    pub fn get_message(&self) -> Option<String> {
+        self.message.clone()
     }
 
     // updates animation cycle
