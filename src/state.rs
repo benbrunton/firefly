@@ -1,4 +1,5 @@
-use ggez::event::{self, KeyCode};
+use ggez::Context;
+use ggez::event::{self, KeyCode, KeyMods};
 use ggez::graphics;
 use ggez::input::keyboard;
 
@@ -19,6 +20,9 @@ impl MainState {
 
 impl event::EventHandler for MainState {
     fn update(&mut self, ctx: &mut ggez::Context) -> ggez::GameResult {
+
+        self.player.update();
+/*
         if keyboard::is_key_pressed(ctx, KeyCode::Right) {
             self.player.move_right();
         }
@@ -34,6 +38,7 @@ impl event::EventHandler for MainState {
         if keyboard::is_key_pressed(ctx, KeyCode::Down) {
             self.player.move_backward();
         }
+*/
 
         Ok(())
     }
@@ -45,6 +50,37 @@ impl event::EventHandler for MainState {
 
         graphics::present(ctx)?;
         Ok(())
+    }
+
+    fn key_down_event(&mut self, ctx: &mut Context, key: KeyCode, mods: KeyMods, _: bool) {
+        match key {
+            KeyCode::Up => self.player.begin_move_up(),
+            KeyCode::Down => self.player.begin_move_down(),
+            KeyCode::Left => self.player.begin_move_left(),
+            KeyCode::Right => self.player.begin_move_right(),
+            // Quit if Shift+Ctrl+Q is pressed.
+            KeyCode::Q => {
+                if mods.contains(KeyMods::SHIFT) && mods.contains(KeyMods::CTRL) {
+                    println!("Terminating!");
+                    event::quit(ctx);
+                } else if mods.contains(KeyMods::SHIFT) || mods.contains(KeyMods::CTRL) {
+                    println!("You need to hold both Shift and Control to quit.");
+                } else {
+                    println!("Now you're not even trying!");
+                }
+            },
+            _ => (),
+        }
+    }
+    
+    fn key_up_event(&mut self, ctx: &mut Context, key: KeyCode, mods: KeyMods) {
+        match key {
+            KeyCode::Up => self.player.end_move_up(),
+            KeyCode::Down => self.player.end_move_down(),
+            KeyCode::Left => self.player.end_move_left(),
+            KeyCode::Right => self.player.end_move_right(),
+            _ => ()
+        }
     }
 }
 

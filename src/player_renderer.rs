@@ -9,15 +9,18 @@ pub fn draw(
     player: &Player
 ) -> ggez::GameResult {
     let image = graphics::Image::new(
-        ctx, "/characters/Rogue.png"
+        ctx, "/characters/Knight.png"
     )?;
     let (pos_x, pos_y) = player.get_pos();
     let (h_direction, v_direction) = player.get_direction();
+    let cycle = player.get_cycle();
     let (w, h) = (0.124, 0.5);
-    let x = match h_direction {
-        HorizontalDirection::Left => 0.125 * 3.0,
+    let x_start = match h_direction {
+        HorizontalDirection::Left => 0.125 * (3.0),
         _ => 0.0
     };
+
+    let x = x_start + (0.125 * cycle);
     let y = match v_direction {
         VerticalDirection::Up => 0.5,
         _ => 0.0,
