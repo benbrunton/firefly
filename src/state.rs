@@ -1,6 +1,5 @@
-use ggez::Context;
+use ggez::{timer, Context, graphics};
 use ggez::event::{self, KeyCode, KeyMods};
-use ggez::graphics;
 use ggez::input::keyboard;
 
 use crate::player::Player;
@@ -21,25 +20,9 @@ impl MainState {
 impl event::EventHandler for MainState {
     fn update(&mut self, ctx: &mut ggez::Context) -> ggez::GameResult {
 
-        self.player.update();
-/*
-        if keyboard::is_key_pressed(ctx, KeyCode::Right) {
-            self.player.move_right();
+        while(timer::check_update_time(ctx, 60)) {
+            self.player.update();
         }
-
-        if keyboard::is_key_pressed(ctx, KeyCode::Left) {
-            self.player.move_left();
-        }
-
-        if keyboard::is_key_pressed(ctx, KeyCode::Up) {
-            self.player.move_forward();
-        }
-
-        if keyboard::is_key_pressed(ctx, KeyCode::Down) {
-            self.player.move_backward();
-        }
-*/
-
         Ok(())
     }
 

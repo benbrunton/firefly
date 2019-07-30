@@ -1,3 +1,6 @@
+// frame on which animation occurs
+const FRAME_CYCLE: i32 = 10;
+
 #[derive(Copy, Clone)]
 pub enum HorizontalDirection {
     Left,
@@ -17,6 +20,8 @@ pub struct Player {
     moving_right: bool,
     moving_up: bool,
     moving_down: bool,
+    horizontal_direction: HorizontalDirection,
+    vertical_direction: VerticalDirection,
     cycle: f32,
     lifecycle: i32
 }
@@ -30,31 +35,38 @@ impl Player {
             moving_right: false,
             moving_up: false,
             moving_down: false,
+            horizontal_direction: HorizontalDirection::Left,
+            vertical_direction: VerticalDirection::Down,
             cycle: 0.0,
             lifecycle: 0
         }
     }
 
+    // todo - diagonal should not be quicker
     pub fn update(&mut self) {
         let mut moving = false;
-        // if moving
+
         if self.moving_left {
             self.pos_x -= 0.5;
+            self.horizontal_direction = HorizontalDirection::Left;
             moving = true;
         }
 
         if self.moving_right {
             self.pos_x += 0.5;
+            self.horizontal_direction = HorizontalDirection::Right;
             moving = true;
         }
 
         if self.moving_up {
             self.pos_y -= 0.5;
+            self.vertical_direction = VerticalDirection::Up;
             moving = true;
         }
 
         if self.moving_down {
             self.pos_y += 0.5;
+            self.vertical_direction = VerticalDirection::Down;
             moving = true;
         }
 
@@ -101,28 +113,18 @@ impl Player {
     }
 
     pub fn get_direction(&self) -> (HorizontalDirection, VerticalDirection) {
-        let horizontal = if self.moving_left {
-            HorizontalDirection::Left
-        } else {
-            HorizontalDirection::Right
-        };
 
-        let vertical = if self.moving_up {
-            VerticalDirection::Up
-        } else {
-            VerticalDirection::Down
-        };
-
-        (horizontal, vertical)
+        (self.horizontal_direction, self.vertical_direction)
     }
 
     pub fn get_cycle(&self) -> f32 {
         self.cycle
     }
 
+    // updates animation cycle
     fn update_cycle(&mut self) {
         self.lifecycle += 1;
-        if self.lifecycle % 5 == 0 {
+        if self.lifecycle % FRAME_CYCLE == 0 {
             self.cycle += 1.0;
         }
 
