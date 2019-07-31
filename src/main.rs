@@ -6,6 +6,7 @@ use ggez::event;
 mod state;
 mod player;
 mod player_renderer;
+mod map;
 
 pub fn main() -> ggez::GameResult { 
     let resource_dir = if let Ok(manifest_dir)

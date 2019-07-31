@@ -4,7 +4,7 @@ use rand::seq::SliceRandom;
 
 // frame on which animation occurs
 const FRAME_CYCLE: i32 = 10;
-const WALKING_VELOCITY: f32 = 0.5;
+const WALKING_VELOCITY: f32 = 0.7;
 
 #[derive(Copy, Clone, PartialEq)]
 pub enum HorizontalDirection {
@@ -44,7 +44,7 @@ impl Player {
             moving_right: false,
             moving_up: false,
             moving_down: false,
-            horizontal_direction: HorizontalDirection::Left,
+            horizontal_direction: HorizontalDirection::Right,
             vertical_direction: VerticalDirection::Down,
             cycle: 0.0,
             lifecycle: 0,

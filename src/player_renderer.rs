@@ -10,7 +10,7 @@ pub fn draw(
     player: &Player
 ) -> ggez::GameResult {
     let image = graphics::Image::new(
-        ctx, "/characters/Ninja.png"
+        ctx, "/characters/Wizard.png"
     )?;
     let draw_param = get_player_draw_param(player);
     graphics::draw(
@@ -24,9 +24,12 @@ pub fn draw(
 
     if text_frag.is_some() {
         let text = Text::new(text_frag.unwrap());
-        let (pos_x, pos_y) = player.get_pos();
-        let text_x = pos_x - (text.width(ctx) as f32 - 32.0) / 2.0;
-        let text_y = pos_y - text.height(ctx) as f32 - 2.0;
+        let pos_x = 400 - 16;
+        let pos_y = 300 - 16;
+        let text_x = pos_x as f32 
+            - (text.width(ctx) as f32 - 32.0) / 2.0;
+        let text_y = pos_y as f32
+            - text.height(ctx) as f32 - 2.0;
         let dst = na::Point2::new(text_x, text_y);
         let text_params = graphics::DrawParam::default()
             .dest(dst);
@@ -42,7 +45,6 @@ pub fn draw(
 }
 
 fn get_player_draw_param(player: &Player) -> graphics::DrawParam {
-    let (pos_x, pos_y) = player.get_pos();
     let (h_direction, v_direction) = player.get_direction();
     let cycle = player.get_cycle();
     let (w, h) = (0.124, 0.5);
@@ -59,7 +61,9 @@ fn get_player_draw_param(player: &Player) -> graphics::DrawParam {
 
 
     let rect = graphics::Rect::new(x, y, w, h);
-    let dst = na::Point2::new(pos_x, pos_y);
+    let xpos = 400 - 16;
+    let ypos = 300 - 16;
+    let dst = na::Point2::new(xpos as f32, ypos as f32);
     graphics::DrawParam::default()
         .dest(dst)
         .src(rect)
