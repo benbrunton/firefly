@@ -7,6 +7,7 @@ mod state;
 mod player;
 mod player_renderer;
 mod map;
+mod weather_renderer;
 
 const WINDOW_WIDTH: f32 = 800.0;
 const WINDOW_HEIGHT: f32 = 600.0;

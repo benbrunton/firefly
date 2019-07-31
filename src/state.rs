@@ -3,10 +3,12 @@ use ggez::event::{self, KeyCode, KeyMods};
 use crate::player::Player;
 use crate::player_renderer;
 use crate::map;
+use crate::weather_renderer::WeatherRenderer;
 
 pub struct MainState {
     player: Player,
-    map: map::Map
+    map: map::Map,
+    weather_renderer: WeatherRenderer
 }
 
 impl MainState {
@@ -15,7 +17,8 @@ impl MainState {
     ) -> ggez::GameResult<MainState> {
         let player = Player::new();
         let map = map::Map::new(window_width, window_height);
-        let s = MainState { player, map };
+        let weather_renderer = WeatherRenderer::new();
+        let s = MainState { player, map, weather_renderer };
         Ok(s)
     }
 }
@@ -34,6 +37,7 @@ impl event::EventHandler for MainState {
         graphics::clear(ctx, [0.1, 0.2, 0.3, 1.0].into());
         let _ = self.map.draw(ctx, coords);
         let _ = player_renderer::draw(ctx, &self.player);
+        let _ = self.weather_renderer.draw(ctx);
 
         graphics::present(ctx)?;
         Ok(())
