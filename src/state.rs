@@ -69,7 +69,6 @@ impl event::EventHandler for MainState {
             KeyCode::Down => self.player.end_move_down(),
             KeyCode::Left => self.player.end_move_left(),
             KeyCode::Right => self.player.end_move_right(),
-            KeyCode::Z => self.player.cancel_message(),
             _ => ()
         }
     }

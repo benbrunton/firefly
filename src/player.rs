@@ -5,6 +5,7 @@ use rand::seq::SliceRandom;
 // frame on which animation occurs
 const FRAME_CYCLE: i32 = 10;
 const WALKING_VELOCITY: f32 = 0.7;
+const MESSAGE_DURATION: i32 = 140;
 
 #[derive(Copy, Clone, PartialEq)]
 pub enum HorizontalDirection {
@@ -30,7 +31,8 @@ pub struct Player {
     cycle: f32,
     lifecycle: i32,
     diagonal_velocity: f32,
-    message: Option<String>
+    message: Option<String>,
+    message_started: i32,
 }
 
 impl Player {
@@ -50,6 +52,7 @@ impl Player {
             lifecycle: 0,
             diagonal_velocity,
             message: None,
+            message_started: 0
         }
     }
 
@@ -89,6 +92,10 @@ impl Player {
             self.update_cycle();
         } else {
             self.reset_cycle();
+        }
+
+        if self.lifecycle - self.message_started > MESSAGE_DURATION {
+            self.cancel_message();
         }
     }
 
@@ -143,6 +150,8 @@ impl Player {
             return;
         }
 
+        self.message_started = self.lifecycle;
+
         let choices = [
             "Oh bloody hell!",
             "Fuck this shit!",
@@ -165,7 +174,8 @@ impl Player {
         self.message = Some(phrase);
     }
 
-    pub fn cancel_message(&mut self) {
+    fn cancel_message(&mut self) {
+        self.message_started = 0;
         self.message = None;
     }
 
