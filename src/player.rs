@@ -97,6 +97,8 @@ impl Player {
         if self.lifecycle - self.message_started > MESSAGE_DURATION {
             self.cancel_message();
         }
+
+        self.lifecycle += 1;
     }
 
     pub fn begin_move_left(&mut self) {
@@ -185,7 +187,6 @@ impl Player {
 
     // updates animation cycle
     fn update_cycle(&mut self) {
-        self.lifecycle += 1;
         if self.lifecycle % FRAME_CYCLE == 0 {
             self.cycle += 1.0;
         }
