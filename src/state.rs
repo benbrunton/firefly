@@ -10,9 +10,11 @@ pub struct MainState {
 }
 
 impl MainState {
-    pub fn new() -> ggez::GameResult<MainState> {
+    pub fn new(
+        window_width: f32, window_height: f32
+    ) -> ggez::GameResult<MainState> {
         let player = Player::new();
-        let map = map::Map::new();
+        let map = map::Map::new(window_width, window_height);
         let s = MainState { player, map };
         Ok(s)
     }
