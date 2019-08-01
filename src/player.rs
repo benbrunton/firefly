@@ -3,8 +3,8 @@ use rand::thread_rng;
 use rand::seq::SliceRandom;
 
 // frame on which animation occurs
-const FRAME_CYCLE: i32 = 10;
-const WALKING_VELOCITY: f32 = 0.7;
+const FRAME_CYCLE: i32 = 7;
+const WALKING_VELOCITY: f32 = 0.9;
 const MESSAGE_DURATION: i32 = 140;
 
 #[derive(Copy, Clone, PartialEq)]

@@ -1,9 +1,9 @@
 use std::collections::HashMap;
-use rand::thread_rng;
-use rand::seq::SliceRandom;
 use ggez;
 use ggez::graphics::spritebatch::SpriteBatch;
 use ggez::{graphics, nalgebra as na};
+use noise::Perlin;
+use noise::NoiseFn;
 
 const TILE_WIDTH:f32 = 32.0;
 const TILE_FRACTION:f32 = 0.1;
@@ -22,7 +22,8 @@ pub struct Map {
     window_width: f32,
     window_height: f32,
     stored_tiles: HashMap<String, String>,
-    tile_types: HashMap<String, f32>
+    tile_types: HashMap<String, f32>,
+    noise: Perlin
 }
 
 impl Map {
@@ -39,11 +40,15 @@ impl Map {
             ("h".to_string(), TILE_FRACTION * 7.0),
         ].iter().cloned().collect();
 
+        let noise = Perlin::new();
+
+
         Map{
             window_width,
             window_height,
             stored_tiles,
-            tile_types
+            tile_types,
+            noise
         }
     }
 
@@ -81,19 +86,12 @@ impl Map {
                 let tile_type = match self.stored_tiles.get(&key) {
                     Some(v) => v.clone(),
                     None    => {
-                        println!("generating: {}", key);
-                        let mut rng = thread_rng();
-                        let tile_t = TILE_TYPE_KEYS
-                            .choose(&mut rng)
-                            .unwrap_or(&"a").to_string();
+                        let tile_t = self.get_tile_type(x, y);
 
-
-                        println!("generating! tiles");
                         self.stored_tiles.insert(
                             key, tile_t.clone()
                         );
 
-                        println!("{}", self.stored_tiles.len());
                         tile_t.clone()
                     }
                 };
@@ -124,6 +122,23 @@ impl Map {
             graphics::DrawParam::default()
                 .dest(dst)
         )
+    }
+
+    fn get_tile_type(&self, x: f32, y: f32) -> String {
+        let mut p = (self.noise.get(
+            [
+                (x / 100.0) as f64, 
+                (y / 100.0) as f64
+            ]
+        ) * 20.0).abs() as usize;
+
+        if p >= TILE_TYPE_KEYS.len() {
+            p = 0;
+        }
+
+        let tile_t = TILE_TYPE_KEYS[p];
+        tile_t.to_string()
+
     }
 }
 
