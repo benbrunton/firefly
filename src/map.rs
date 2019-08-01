@@ -2,8 +2,7 @@ use std::collections::HashMap;
 use ggez;
 use ggez::graphics::spritebatch::SpriteBatch;
 use ggez::{graphics, nalgebra as na};
-use noise::Perlin;
-use noise::NoiseFn;
+use noise::{Perlin, NoiseFn, Seedable};
 
 const TILE_WIDTH:f32 = 32.0;
 const TILE_FRACTION:f32 = 0.1;
@@ -40,7 +39,7 @@ impl Map {
             ("h".to_string(), TILE_FRACTION * 7.0),
         ].iter().cloned().collect();
 
-        let noise = Perlin::new();
+        let noise = Perlin::new().set_seed(5);
 
 
         Map{
@@ -127,13 +126,13 @@ impl Map {
     fn get_tile_type(&self, x: f32, y: f32) -> String {
         let mut p = (self.noise.get(
             [
-                (x / 100.0) as f64, 
-                (y / 100.0) as f64
+                (x / 1000.0) as f64, 
+                (y / 1000.0) as f64
             ]
-        ) * 20.0).abs() as usize;
+        ) * 8.0).abs() as usize;
 
         if p >= TILE_TYPE_KEYS.len() {
-            p = 0;
+            p = TILE_TYPE_KEYS.len() - 1;
         }
 
         let tile_t = TILE_TYPE_KEYS[p];
