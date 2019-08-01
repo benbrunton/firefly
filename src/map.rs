@@ -3,6 +3,7 @@ use ggez;
 use ggez::graphics::spritebatch::SpriteBatch;
 use ggez::{graphics, nalgebra as na};
 use noise::{Perlin, NoiseFn, Seedable};
+use rand::Rng;
 
 const TILE_WIDTH:f32 = 32.0;
 const TILE_FRACTION:f32 = 0.1;
@@ -38,9 +39,18 @@ impl Map {
             ("g".to_string(), TILE_FRACTION * 6.0),
             ("h".to_string(), TILE_FRACTION * 7.0),
         ].iter().cloned().collect();
-
-        let noise = Perlin::new().set_seed(5);
-
+        let mut rng = rand::thread_rng(); 
+        let noise = {
+            let mut n = Perlin::new();
+            let mut tile_t = "h".to_string();
+            while tile_t == "h" || tile_t == "g" || tile_t == "f" {
+                n = Perlin::new()
+                    .set_seed(rng.gen_range(0, 100));
+                tile_t = Self::get_tile_type(n, 10.0, 300.0);
+                println!("starting tile is: {}", tile_t);
+            }
+            n
+        };
 
         Map{
             window_width,
@@ -85,7 +95,9 @@ impl Map {
                 let tile_type = match self.stored_tiles.get(&key) {
                     Some(v) => v.clone(),
                     None    => {
-                        let tile_t = self.get_tile_type(x, y);
+                        let tile_t = Self::get_tile_type(
+                            self.noise, x, y
+                        );
 
                         self.stored_tiles.insert(
                             key, tile_t.clone()
@@ -123,8 +135,8 @@ impl Map {
         )
     }
 
-    fn get_tile_type(&self, x: f32, y: f32) -> String {
-        let mut p = (self.noise.get(
+    fn get_tile_type(noise: Perlin, x: f32, y: f32) -> String {
+        let mut p = (noise.get(
             [
                 (x / 1000.0) as f64, 
                 (y / 1000.0) as f64
