@@ -7,14 +7,14 @@ use noise::{Perlin, NoiseFn, Seedable};
 const TILE_WIDTH:f32 = 32.0;
 const TILE_FRACTION:f32 = 0.1;
 const TILE_TYPE_KEYS:[&str; 8] = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
     "h",
+    "g",
+    "f",
+    "e",
+    "d",
+    "c",
+    "b",
+    "a",
 ];
 
 pub struct Map {
@@ -129,7 +129,7 @@ impl Map {
                 (x / 1000.0) as f64, 
                 (y / 1000.0) as f64
             ]
-        ) * 8.0).abs() as usize;
+        ) * 20.0).abs() as usize;
 
         if p >= TILE_TYPE_KEYS.len() {
             p = TILE_TYPE_KEYS.len() - 1;

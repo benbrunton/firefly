@@ -40,8 +40,8 @@ impl Player {
         let diagonal_velocity = (f32::consts::PI/4.0)
             .sin() * WALKING_VELOCITY as f32;
         Player {
-            pos_x: 0.0,
-            pos_y: 0.0,
+            pos_x: 10.0,
+            pos_y: 300.0,
             moving_left: false,
             moving_right: false,
             moving_up: false,
