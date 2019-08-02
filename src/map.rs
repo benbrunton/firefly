@@ -50,8 +50,8 @@ impl Map {
                     .set_seed(rng.gen_range(0, 100));
                 tile_t = Self::get_tile_type(n, 10.0, 300.0);
                 println!("starting tile is: {}", tile_t);
-                if tile_t != "h" || 
-                    tile_t != "g" || tile_t != "f" {
+                if tile_t != "h" && 
+                    tile_t != "g" && tile_t != "f" {
                     break;
                 }
             }

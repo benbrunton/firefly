@@ -7,6 +7,25 @@ use crate::map::Map;
 const FRAME_CYCLE: i32 = 7;
 const WALKING_VELOCITY: f32 = 0.9;
 const MESSAGE_DURATION: i32 = 140;
+const NEGATIVE_PHRASES: [&str; 17] = [
+    "Oh bloody hell!",
+    "Fuck this shit!",
+    "Piss in a bucket!",
+    "Just fucking perfect",
+    "Right... yeah... brilliant.",
+    "Bollocks!",
+    "Fucking, fucking, fucking, FUCK!",
+    "Shitting balls!",
+    "FML",
+    "What's the fucking point?",
+    "Why me?",
+    "Oh for fuck's sake!",
+    "FFS!",
+    "I can't even.",
+    "Jesus fucking Christ!",
+    "Arse!",
+    "Grumble, grumble, grumble..."
+];
 
 #[derive(Copy, Clone, PartialEq)]
 pub enum HorizontalDirection {
@@ -168,24 +187,8 @@ impl Player {
 
         self.message_started = self.lifecycle;
 
-        let choices = [
-            "Oh bloody hell!",
-            "Fuck this shit!",
-            "...piss in a bucket!",
-            "Just fucking perfect",
-            "Right... yeah... brilliant.",
-            "Bollocks!",
-            "Fucking, fucking, fucking, FUCK!",
-            "Shitting balls!",
-            "FML",
-            "What's the fucking point?",
-            "Why me?",
-            "Oh for fuck's sake!",
-            "FFS!",
-            "I can't even."
-        ];
         let mut rng = thread_rng();
-        let phrase = choices.choose(&mut rng)
+        let phrase = NEGATIVE_PHRASES.choose(&mut rng)
             .unwrap_or(&"Bollocks!").to_string();
         self.message = Some(phrase);
     }
