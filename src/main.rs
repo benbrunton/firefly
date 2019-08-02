@@ -2,6 +2,7 @@ use std::{env, path};
 
 use ggez;
 use ggez::event;
+use ggez::audio::SoundSource;
 
 mod state;
 mod player;
@@ -16,10 +17,10 @@ pub fn main() -> ggez::GameResult {
     let resource_dir = if let Ok(manifest_dir)
         = env::var("CARGO_MANIFEST_DIR") {
         let mut path = path::PathBuf::from(manifest_dir);
-        path.push("graphics");
+        path.push("assets");
         path
     } else {
-        path::PathBuf::from("./graphics")
+        path::PathBuf::from("./assets")
     };
     let window_setup = ggez::conf::WindowSetup {
         title: "Firefly".to_owned(),
@@ -49,6 +50,12 @@ pub fn main() -> ggez::GameResult {
     let state = &mut state::MainState::new(
         WINDOW_WIDTH, WINDOW_HEIGHT
     )?;
+
+    let mut sound = ggez::audio::Source::new(
+        ctx, "/sounds/rain.mp3"
+    )?;
+    sound.set_repeat(true);
+    let _ = sound.play_detached();
     let result = event::run(ctx, event_loop, state);
     match &result {
         Ok(_) => println!("Exited cleanly."),

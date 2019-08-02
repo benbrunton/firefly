@@ -16,3 +16,6 @@ This game needs to run in optimised mode otherwise rendering all
 those sprites makes performance terrible.
 
 `cargo run --release`
+
+## Credits
+- Additional sound effects from [https://www.zapsplat.com](https://www.zapsplat.com)

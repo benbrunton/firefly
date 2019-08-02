@@ -4,10 +4,10 @@ use ggez::graphics::spritebatch::SpriteBatch;
 use rand::Rng;
 
 static IMAGE_LIST: [&str;4] = [
-    "/effects/rain_drops-01.png",
-    "/effects/rain_drops-02.png",
-    "/effects/rain_drops-03.png",
-    "/effects/rain_drops-04.png"
+    "/graphics/effects/rain_drops-01.png",
+    "/graphics/effects/rain_drops-02.png",
+    "/graphics/effects/rain_drops-03.png",
+    "/graphics/effects/rain_drops-04.png"
 ];
 
 const TILE_WIDTH: f32 = 256.0;

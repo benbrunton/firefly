@@ -111,7 +111,6 @@ impl Player {
         }
 
         let tile = map.get_tile(pos_x, pos_y);
-        println!("standing on tile:{}", tile);
         match &*tile {
             "f" | "g" | "h" => (),
             _ => {

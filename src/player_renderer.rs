@@ -10,7 +10,7 @@ pub fn draw(
     player: &Player
 ) -> ggez::GameResult {
     let image = graphics::Image::new(
-        ctx, "/characters/Wizard.png"
+        ctx, "/graphics/characters/Wizard.png"
     )?;
     let draw_param = get_player_draw_param(player);
     graphics::draw(

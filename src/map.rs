@@ -78,7 +78,7 @@ impl Map {
             - TILE_WIDTH / 2.0 - player_y_pos;
 
         let image = graphics::Image::new(
-            ctx, "/terrain/TerrainTile.png"
+            ctx, "/graphics/terrain/TerrainTile.png"
         ).expect("unable to load terrain tiles");
         let mut spritebatch = SpriteBatch::new(image);
 
