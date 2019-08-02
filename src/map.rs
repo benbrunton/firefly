@@ -7,6 +7,8 @@ use rand::Rng;
 
 const TILE_WIDTH:f32 = 32.0;
 const TILE_FRACTION:f32 = 0.1;
+
+// TODO keys as enum
 const TILE_TYPE_KEYS:[&str; 8] = [
     "h",
     "g",
@@ -41,13 +43,17 @@ impl Map {
         ].iter().cloned().collect();
         let mut rng = rand::thread_rng(); 
         let noise = {
-            let mut n = Perlin::new();
-            let mut tile_t = "h".to_string();
-            while tile_t == "h" || tile_t == "g" || tile_t == "f" {
+            let mut n;
+            let mut tile_t;
+            loop  {
                 n = Perlin::new()
                     .set_seed(rng.gen_range(0, 100));
                 tile_t = Self::get_tile_type(n, 10.0, 300.0);
                 println!("starting tile is: {}", tile_t);
+                if tile_t != "h" || 
+                    tile_t != "g" || tile_t != "f" {
+                    break;
+                }
             }
             n
         };
@@ -133,6 +139,12 @@ impl Map {
             graphics::DrawParam::default()
                 .dest(dst)
         )
+    }
+
+    pub fn get_tile(&self, x: f32, y:f32) -> String {
+        let offset_y = (y % TILE_WIDTH).round() / 2.0;
+
+        Self::get_tile_type(self.noise, x, y - offset_y)
     }
 
     fn get_tile_type(noise: Perlin, x: f32, y: f32) -> String {

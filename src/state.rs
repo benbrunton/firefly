@@ -27,7 +27,9 @@ impl event::EventHandler for MainState {
     fn update(&mut self, ctx: &mut ggez::Context) -> ggez::GameResult {
 
         while timer::check_update_time(ctx, 60) {
-            self.player.update();
+            self.player.update(
+                &self.map
+            );
         }
         Ok(())
     }
